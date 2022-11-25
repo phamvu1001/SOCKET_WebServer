@@ -59,8 +59,8 @@ class Response:
 			if self.file_type in ["png","jpg","jpeg","gif"]:
 				header += 'Content-Type: image/%s\n'%self.file_type
 			else:
-				header += 'Content-Type: multipart/form-data\r\n'
-		header += 'Connection: Closed\r\n' 
+				header += 'Content-Type: application/octet-stream\r\n'
+		header += 'Connection: closed\r\n' 
 		self.header = header
 		print(f'-------------------\n [HEADER RESPONSE]\n {header}')
 

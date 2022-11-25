@@ -62,24 +62,24 @@ def getMethod(client, request):
 	#Return to homepage first time connect
 	if request.path in ['/','/index.html']:
 		request.path = config.get_index
-	if request.path == '/favicon.con':
+	elif request.path == '/favicon.con':
 		request.path = '/web_src' + request.path 
-	if request.path == '/css/style.css':
+	elif request.path == '/css/style.css':
 		request.path = config.get_style
-	if request.path == '/css/utils.css':
+	elif request.path == '/css/utils.css':
 		request.path = config.get_utils
-	if request.path == '/404.html':
-		request.path = config.get_404
-	if request.path == '/401.html':
+	elif request.path == '/401.html':
 		request.path = config.get_401
-	if request.path == '/images/images1.jpg':
+	elif request.path == '/images/images1.jpg':
 		request.path = config.get_images1
-	if request.path == '/images/images2.jpg':
+	elif request.path == '/images/images2.jpg':
 		request.path = config.get_images2
-	if request.path == '/images/images3.jpg':
+	elif request.path == '/images/images3.jpg':
 		request.path = config.get_images3
-	if request.path == '/images/images4.jpg':
+	elif request.path == '/images/images4.jpg':
 		request.path = config.get_images4
+	else:
+		request.path = config.get_404
     	
 
 	#print(request.path)
