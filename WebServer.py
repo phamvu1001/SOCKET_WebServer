@@ -11,6 +11,8 @@ def Method(client):
             postMethod(client, request)
         else:
             getMethod(client, request)
+    client.shutdown(socket.SHUT_RD)
+
 	
 def Connections():
     while True:
