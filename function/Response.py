@@ -28,8 +28,10 @@ class Response:
 			path = config.get_style
 			self.ChunkedSend = False
 		if path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
+			path = "/web_src" + path
 			self.ChunkedSend = False
 		if path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
+			path = "/web_src" + path
 			self.ChunkedSend = False
 		# Split path into array to get file name and file type
 		self.locOf_file = path							

@@ -78,9 +78,9 @@ def getMethod(client, request):
 	elif request.path == '/images/images4.jpg':
 		request.path = "/web_src/images/images4.jpg"
 	elif request.path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
-		request.path = request.path
+		request.path = "/web_src" + request.path
 	elif request.path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
-		request.path = request.path
+		request.path = "/web_src" + request.path
 	else:
 		request.path = config.get_404
     	
