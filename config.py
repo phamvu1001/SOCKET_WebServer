@@ -1,7 +1,7 @@
 import socket
 
 
-HOST = socket.gethostbyname(socket.gethostname())
+HOST = 'localhost'
 PORT = 8080
 
 uname = "admin"
@@ -17,8 +17,4 @@ get_utils = "/web_src/css/utils.css"
 get_404 = "/web_src/404.html"
 get_401 = "/web_src/401.html"
 get_images = "/web_src/images.html"
-get_images1 = "/web_src/images/images1.jpg"
-get_images2 = "/web_src/images/images2.jpg"
-get_images3 = "/web_src/images/images3.jpg"
-get_images4 = "/web_src/images/images4.jpg"
 

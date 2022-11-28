@@ -58,12 +58,11 @@ def getMethod(client, request):
 	#if not "GET" method, abort 
 	if request.method != 'GET':
 		return
-
 	#Return to homepage first time connect
 	if request.path in ['/','/index.html']:
 		request.path = config.get_index
-	elif request.path == '/favicon.con':
-		request.path = '/web_src' + request.path 
+	elif request.path == '/favicon.ico':
+		request.path = config.get_favicon
 	elif request.path == '/css/style.css':
 		request.path = config.get_style
 	elif request.path == '/css/utils.css':
@@ -71,13 +70,17 @@ def getMethod(client, request):
 	elif request.path == '/401.html':
 		request.path = config.get_401
 	elif request.path == '/images/images1.jpg':
-		request.path = config.get_images1
+		request.path = "/web_src/images/images1.jpg"
 	elif request.path == '/images/images2.jpg':
-		request.path = config.get_images2
+		request.path = "/web_src/images/images2.jpg"
 	elif request.path == '/images/images3.jpg':
-		request.path = config.get_images3
+		request.path = "/web_src/images/images3.jpg"
 	elif request.path == '/images/images4.jpg':
-		request.path = config.get_images4
+		request.path = "/web_src/images/images4.jpg"
+	elif request.path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
+		request.path = request.path
+	elif request.path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
+		request.path = request.path
 	else:
 		request.path = config.get_404
     	

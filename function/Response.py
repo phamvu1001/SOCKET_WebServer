@@ -1,5 +1,5 @@
 import config
-from function.RenderFile import *
+import random
 
 class Response:
 	def __init__(self, path):
@@ -8,7 +8,6 @@ class Response:
 		self.status = 200
 
 		#if case below define some files to transfer normally
-
 		self.ChunkedSend = True			#Default is normal send
 		if path in ['/','/index.html']: #index here
 			path = config.get_index
@@ -28,7 +27,10 @@ class Response:
 		if path == '/css/style.css':
 			path = config.get_style
 			self.ChunkedSend = False
-		
+		if path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
+			self.ChunkedSend = False
+		if path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
+			self.ChunkedSend = False
 		# Split path into array to get file name and file type
 		self.locOf_file = path							
 		file_info = path.split('/')[-1].split('.')		
@@ -41,7 +43,7 @@ class Response:
 				if(self.ChunkedSend != True):
 					self.buffer = open(path[1:],"rb")
 				else:
-					self.buffer = open(path[1:].replace("%20"," "),"rb")				# Get data buffer from file
+					self.buffer = open(path[1:].replace("%20"," "),"rb")	# Get data buffer from file
 					#self.buffer2 = open(path[1:],"rb")
 		except:
 			self.status = 404
@@ -62,7 +64,7 @@ class Response:
 				header += 'Content-Type: application/octet-stream\r\n'
 		header += 'Connection: closed\r\n' 
 		self.header = header
-		print(f'-------------------\n [HEADER RESPONSE]\n {header}')
+		print(f'-------------------\n[HEADER RESPONSE]\n {header}')
 
 	def makeResponse(self):
 		#Self.ChunkedSend is detect to send normal or with chunked transfer

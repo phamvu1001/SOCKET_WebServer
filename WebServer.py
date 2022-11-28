@@ -21,7 +21,8 @@ def Connections():
         Thread(target=Method,args=(client,)).start()
 
 server = socket.socket(socket.AF_INET,socket.SOCK_STREAM) 
-server.bind(('localhost', 8080))
+server.bind((config.HOST, config.PORT))
+print(f'* Running on http://{config.HOST}:{config.PORT}')
 
 
 try:
