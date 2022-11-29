@@ -8,45 +8,45 @@ class Response:
 		self.status = 200
 
 		#if case below define some files to transfer normally
-		self.ChunkedSend = True			#Default is normal send
-		if path in ['/','/index.html']: #index here
-			path = config.get_index
-			self.ChunkedSend = False
-		if path == '/images.html': #images page after login
-			path = config.get_images
-			self.ChunkedSend = False
-		if path == '/css/utils.css':
-			path = config.get_utils
-			self.ChunkedSend = False
-		if path == '/401.html':
-			path = config.get_401
-		if path == '/404.html': #error page
-			path = config.get_404
-			self.status = 404		
-			self.ChunkedSend = False						# change status code
-		if path == '/css/style.css':
-			path = config.get_style
-			self.ChunkedSend = False
-		if path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
-			path = "/web_src" + path
-			self.ChunkedSend = False
-		if path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
-			path = "/web_src" + path
-			self.ChunkedSend = False
+		self.ChunkedSend = True			#Mac dinh la gui theo cach thong thuong (ChuckedSend = Flase)
+		# if path in ['/','/index.html']: #index here
+		# 	path = config.get_index
+		# 	self.ChunkedSend = False
+		# if path == '/images.html': #images page after login
+		# 	path = config.get_images
+		# 	self.ChunkedSend = False
+		# if path == '/css/utils.css':
+		# 	path = config.get_utils
+		# 	self.ChunkedSend = False
+		# if path == '/401.html':
+		# 	path = config.get_401					
+		# if path == '/css/style.css':
+		# 	path = config.get_style
+		# 	self.ChunkedSend = False
+		# if path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
+		# 	path = "/web_src" + path
+		# 	self.ChunkedSend = False
+		# if path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
+		# 	path = "/web_src" + path
+		# 	self.ChunkedSend = False
+		# if path == '/404.html': #error page
+		# 	path = config.get_404
+		# 	self.status = 404		# change status code
+		# 	self.ChunkedSend = False
+   	
 		# Split path into array to get file name and file type
-		self.locOf_file = path							
+		self.loc_of_file = path							
 		file_info = path.split('/')[-1].split('.')		
 		self.file_type = file_info[-1]		# Get file type from array
 
 
-		#try to open file that provide above, if false, return status code 404 and 404.html
+		# co gang mo file da cung cap duong dan o tren, neu false tra ve status code 404 va 404.html
 		try:
 			if(self.file_buff == ''):
 				if(self.ChunkedSend != True):
 					self.buffer = open(path[1:],"rb")
 				else:
 					self.buffer = open(path[1:].replace("%20"," "),"rb")	# Get data buffer from file
-					#self.buffer2 = open(path[1:],"rb")
 		except:
 			self.status = 404
 			self.ChunkedSend = False
@@ -59,12 +59,11 @@ class Response:
 			header += 'Content-Type: text/%s\n'%self.file_type
 		elif self.file_type == "css":
 			header += 'Content-Type: text/%s\n'%self.file_type
-		else:
-			if self.file_type in ["png","jpg","jpeg","gif"]:
+		elif self.file_type in ["png","jpg","jpeg","gif"]:
 				header += 'Content-Type: image/%s\n'%self.file_type
-			else:
+		else:
 				header += 'Content-Type: application/octet-stream\r\n'
-		header += 'Connection: closed\r\n' 
+		header += 'Connection: close\r\n' 
 		self.header = header
 		print(f'-------------------\n[HEADER RESPONSE]\n {header}')
 
@@ -81,7 +80,7 @@ class Response:
 
 			self.header += "Content-Length: %d\r\n\r\n"%len(content)
 			header = self.header.encode('utf-8') + content + "\r\n".encode('utf-8')
-			print(f"-------------------\n [SEND RESPONSE]\n Transfer {self.locOf_file} with normal mode")
+			print(f"-------------------\n [SEND RESPONSE]\n Transfer {self.loc_of_file} with normal mode")
 			return header
 		else:
 			self.header += "Transfer-Encoding: chunked\r\n\r\n"
@@ -104,5 +103,5 @@ class Response:
 
 		#send chunk
 			header = self.header.encode('utf-8') + self.chunkedcontent + "\r\n\r\n".encode('utf-8')
-			print(f"-------------------\n [SEND RESPONSE]\n Transfer {self.locOf_file} with chunked transfer encoding mode")
+			print(f"-------------------\n [SEND RESPONSE]\n Transfer {self.loc_of_file} with chunked transfer encoding mode")
 			return header

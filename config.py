@@ -8,7 +8,7 @@ uname = "admin"
 psw = "123456"
 remember = "on"
 
-buffer_size = 1024*50#50kb  size per chunk 
+buffer_size = 1024*50 #50kb  size per chunk 
 
 get_favicon = "/web_src/favicon.ico"
 get_index = "/web_src/index.html"

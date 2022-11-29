@@ -3,40 +3,46 @@ import config
 from function.Response import *
 
 # Get request from client
-# Lay yeu cau tu client (browers)
+# Lay yeu cau tu client (browsers)
 def getRequest(client):
 	request = ''
 	client.settimeout(1)
 
 	try:
-		#receive request
+		#nhan request tu client (browsers)
 		request = client.recv(1024).decode()
 		while (request):
 			request += client.recv(1024).decode()
 	except socket.timeout:
-		#if timedout
+		# neu het thoi gian nhan request
+		#if timed out
 		if not request:
 			print("-------------------\n [SERVER]\n No request from client")
 	finally:
-		#parse the request for better using
+		# phan tich request
 		return RequestParse(request)
 
 # phan tich cu phap cua request
 class RequestParse:
 	def __init__(self, request):
-		#print(request)
+		print(request)
+		# cat den truoc noi dung cua file yeu cau trong request
 		requestArray = request.split("\n")
-		#print(requestArray)
+		# print(requestArray)
 		if request == "":
-			self.empty = True	#if there is no request content
+			self.empty = True	# truong hop request khong co noi dung
 		else:
 			self.empty = False
+			# method o day co the la GET hoac POST
 			self.method = requestArray[0].split(" ")[0]		#get method
 			self.path = requestArray[0].split(" ")[1]		#get path
 			self.content = requestArray[-1]					#get request content
+			# Ex: requestArray[0] = 'GET /css/style.css HTTP/1.1\r'
+			# => .method = GET; .path = /css/style.css; 
+   			# vi requestArray duoc cat toi truoc noi dung cua file yeu cau nen .content = '' 
 		
-		'''print(self.content)
-		print(self.path)'''	
+		#print(self.content)
+		#print(self.path)	
 
 
 #POST Method Parser
@@ -54,10 +60,6 @@ def postMethod(client, request):
 
 #GET method parser
 def getMethod(client, request):
-
-	#if not "GET" method, abort 
-	if request.method != 'GET':
-		return
 	#Return to homepage first time connect
 	if request.path in ['/','/index.html']:
 		request.path = config.get_index

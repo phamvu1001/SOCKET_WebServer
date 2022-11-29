@@ -6,7 +6,7 @@ from threading import Thread
 def Method(client):
     request=getRequest(client)
     if not request.empty:
-        print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s has content %s\n"%(request.method, request.path, request.content))
+        print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s\n"%(request.method, request.path))
         if request.method == "POST":
             postMethod(client, request)
         else:
