@@ -2,21 +2,24 @@ import socket
 import config
 from function.MethodParse import *
 from threading import Thread
-
+#tiêp nhận các request từ client cho đến khi client close connection
 def Method(client):
-    request=getRequest(client)
-    if not request.empty:
-        if request.content != '':
-            print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s has content %s\n"%(request.method, request.path, request.content))
-        else:
-            print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s \n"%(request.method, request.path))
-        if request.method == "POST":
-            postMethod(client, request)
-        else:
-            getMethod(client, request)
+    while True:
+    	request=getRequest(client)
+	if not request:
+	    break
+    	if not request.empty:
+       	    if request.content != '':
+		print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s has content %s\n"%(request.method, request.path, request.content))
+            else:
+                print(f"-------------------\n [LISTENED REQUEST]\n Request catched: %s with %s \n"%(request.method, request.path))
+            if request.method == "POST":
+                postMethod(client, request)
+            else:
+                getMethod(client, request)
     client.shutdown(socket.SHUT_RD)
 
-	
+#chia thread để tiếp nhận các connections	
 def Connections():
     while True:
         (client,address)=server.accept()
