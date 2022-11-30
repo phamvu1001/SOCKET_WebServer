@@ -5,8 +5,8 @@ class Response:
 	def __init__(self, path):
 
 		self.file_buff = ''
-		self.status = 200
-
+		self.status = 200 #HTTP 1.1 200 OK
+		# gửi theo kiểu mã hoá chunked
 		self.ChunkedSend = True			
    	
 		# get file name and file type
@@ -25,21 +25,23 @@ class Response:
 		except:
 			self.status = 404
 			self.ChunkedSend = False
-			self.buffer = open(config.get_404[1:],"rb")
+			self.buffer = open(config.get_404[1:],"rb") #mở file theo đường dẫn của get_404 đọc dưới dạng nhị phân
 
 		# khoi tao header
 		header = ""	
 		header += "HTTP/1.1 404 NOT FOUND\n" if(self.status == 404) else "HTTP/1.1 200 OK\n"
 		if self.file_type in ["html","htm"]:
-			header += 'Content-Type: text/%s\n'%self.file_type
+			header += 'Content-Type: text/html\r\n'
 		elif self.file_type == "txt":
 			header += 'Content-Type: text/plain\r\n'
 		elif self.file_type == "css":
-			header += 'Content-Type: text/%s\n'%self.file_type
-		elif self.file_type == "jpg":
+			header += 'Content-Type: text/css\r\n'
+		elif self.file_type in ["jpg","jpeg"]:
 			header += 'Content-Type: image/jpeg\r\n'
-		elif self.file_type in ["png","jpeg","gif"]:
-				header += 'Content-Type: image/%s\n'%self.file_type
+		elif self.file_type == "gif":
+			header += 'Content-Type: image/gif\r\n'
+		elif self.file_type =="png":
+				header += 'Content-Type: image/png\r\n'
 		else:
 				header += 'Content-Type: application/octet-stream\r\n'
 		header += 'Connection: close\r\n' 
