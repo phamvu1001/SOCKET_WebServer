@@ -2,20 +2,18 @@ import socket
 import config
 from function.Response import *
 
-# Get request from client
 # Lay yeu cau tu client (browsers)
 def getRequest(client):
 	request = ''
 	client.settimeout(1)
 
 	try:
-		#nhan request tu client (browsers)
+		# Nhan request tu client (browsers)
 		request = client.recv(1024).decode()
 		while (request):
 			request += client.recv(1024).decode()
 	except socket.timeout:
-		# neu het thoi gian nhan request
-		#if timed out
+		# neu het thoi gian nhan request in ra thhong bao
 		if not request:
 			print("-------------------\n [SERVER]\n No request from client")
 	finally:
@@ -25,7 +23,7 @@ def getRequest(client):
 # phan tich cu phap cua request
 class RequestParse:
 	def __init__(self, request):
-		print(request)
+		# print(request)
 		# cat den truoc noi dung cua file yeu cau trong request
 		requestArray = request.split("\n")
 		# print(requestArray)
@@ -39,20 +37,19 @@ class RequestParse:
 			self.content = requestArray[-1]					#get request content
 			# Ex: requestArray[0] = 'GET /css/style.css HTTP/1.1\r'
 			# => .method = GET; .path = /css/style.css; 
-   			# vi requestArray duoc cat toi truoc noi dung cua file yeu cau nen .content = '' 
+   			# .content la noi dung file ma client gui request (vd: uname=...&admin=...)
 		
-		#print(self.content)
-		#print(self.path)	
-
 
 #POST Method Parser
 def postMethod(client, request):
+    # truong hop dang nhap dung uname va psw
 	if(request.path == '/images.html' and request.content == "uname=%s&psw=%s&remember=%s"%(config.uname,config.psw,config.remember)):
 		client.sendall(Response(config.get_images).makeResponse())
 		return
 	elif (request.path == '/images.html' and request.content == "uname=%s&psw=%s"%(config.uname,config.psw)):
 		client.sendall(Response(config.get_images).makeResponse())
-		return		
+		return	
+	# truong hop dang nhap sai thong tin	
 	else:
 		client.sendall(Response(config.get_401).makeResponse())
 		return
@@ -60,6 +57,7 @@ def postMethod(client, request):
 
 #GET method parser
 def getMethod(client, request):
+    # thiet lap cac duong dan khi nhan duoc yeu cau voi method la GET
 	#Return to homepage first time connect
 	if request.path in ['/','/index.html']:
 		request.path = config.get_index
@@ -71,14 +69,8 @@ def getMethod(client, request):
 		request.path = config.get_utils
 	elif request.path == '/401.html':
 		request.path = config.get_401
-	elif request.path == '/images/images1.jpg':
-		request.path = "/web_src/images/images1.jpg"
-	elif request.path == '/images/images2.jpg':
-		request.path = "/web_src/images/images2.jpg"
-	elif request.path == '/images/images3.jpg':
-		request.path = "/web_src/images/images3.jpg"
-	elif request.path == '/images/images4.jpg':
-		request.path = "/web_src/images/images4.jpg"
+	elif request.path in ['/images/images1.jpg', '/images/images2.jpg', '/images/images3.jpg', '/images/images4.jpg']:
+		request.path = "/web_src" + request.path
 	elif request.path in ['/avatars/1.png', '/avatars/2.png', '/avatars/3.png', '/avatars/4.png']:
 		request.path = "/web_src" + request.path
 	elif request.path in ['/avatars/5.png', '/avatars/6.png', '/avatars/7.png', '/avatars/8.png']:
@@ -86,8 +78,6 @@ def getMethod(client, request):
 	else:
 		request.path = config.get_404
     	
-
-	#print(request.path)
 	
-	#input the file path to send to to client
+	# truyen vao duong dan file va gui toi client
 	client.sendall(Response(request.path).makeResponse())
